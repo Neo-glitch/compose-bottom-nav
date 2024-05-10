@@ -1,5 +1,10 @@
 package com.example.composebottomnav.screens.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -53,8 +58,12 @@ fun BottomBar(navController: NavController) {
     // to listen to when backstack of this controller changes
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    
-    if(currentDestination?.route != NoBottomBarScreens.NewFeature.route){
+
+    AnimatedVisibility(
+        visible = currentDestination?.route != NoBottomBarScreens.NewFeature.route,
+        enter =  slideInHorizontally() + fadeIn(),
+        exit = slideOutHorizontally() + fadeOut()
+    ) {
         NavigationBar {
             screens.forEach { screen ->
                 AddItem(
@@ -65,6 +74,7 @@ fun BottomBar(navController: NavController) {
             }
         }
     }
+
 }
 
 // to add bottom navBar items in row
